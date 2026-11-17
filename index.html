@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Basket | Juega y supera tu récord</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- BARRA DE NAVEGACIÓN -->
+  <header class="topbar">
+    <a class="brand" href="#inicio">
+      <img src="assets/logo-smart-basket.png" alt="Logo Smart Basket" class="brand-logo">
+      <span>SMART <b>BASKET</b></span>
+    </a>
+
+    <nav class="nav-links" aria-label="Navegación principal">
+      <a href="#marcador">Marcador</a>
+      <a href="#ranking">Ranking</a>
+      <a href="#como-jugar">Cómo jugar</a>
+    </nav>
+
+    <a class="nav-cta" href="#marcador">
+      <span>A jugar</span>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="7" y1="17" x2="17" y2="7"></line>
+        <polyline points="7 7 17 7 17 17"></polyline>
+      </svg>
+    </a>
+  </header>
+
+  <main>
+    <!-- SECCIÓN PRINCIPAL (HERO) -->
+    <section class="hero" id="inicio">
+      <!-- Pelota neón ampliada, semitransparente y fundida con el fondo -->
+      <div class="hero-bg-art" aria-hidden="true">
+        <img src="assets/hero-balon-neon.png" alt="" class="hero-ball-img">
+      </div>
+
+      <div class="hero-copy">
+        <p class="eyebrow">
+          <span class="dot"></span>
+          TU RETO DE BÁSQUETBOL
+        </p>
+        <h1>¿Cuántas puedes<br>encestar en <em>60 segundos?</em></h1>
+        <p class="hero-text">
+          Pon a prueba tu puntería bajo presión, supera tu marca personal y registra tus resultados en la tabla oficial.
+        </p>
+        <div class="hero-actions">
+          <a class="button-primary" href="#marcador">
+            <span>Ir al marcador</span>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <polyline points="19 12 12 19 5 12"></polyline>
+            </svg>
+          </a>
+          <a class="button-secondary" href="#como-jugar">Ver reglas</a>
+        </div>
+      </div>
+
+      <div class="hero-strip">
+        <span>SMART BASKET SYSTEM</span>
+        <span>JUEGA &middot; ENCESTA &middot; SUPERA</span>
+        <span>01 / 03</span>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE MARCADOR EN VIVO -->
+    <section class="live section" id="marcador">
+      <div class="section-heading">
+        <span class="section-kicker">EN VIVO</span>
+        <h2>El marcador del juego</h2>
+        <p>Inicia el temporizador de 60 segundos y registra cada canasta en tiempo real.</p>
+      </div>
+
+      <div class="score-layout">
+        <!-- Panel principal del marcador -->
+        <div class="score-main">
+          <div class="score-top">
+            <span class="live-indicator">
+              <span class="live-dot" id="status-dot"></span>
+              <span id="game-status-text">LISTO PARA INICIAR</span>
+            </span>
+            <span class="pill" id="mode-badge">EN ESPERA</span>
+          </div>
+
+          <div class="score-number">
+            <strong id="current-score">0</strong>
+            <span>encestadas</span>
+          </div>
+
+          <!-- Controles funcionales del juego -->
+          <div class="game-controls">
+            <button type="button" class="btn-control btn-start" id="btn-start">
+              <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <span>Iniciar 60s</span>
+            </button>
+
+            <button type="button" class="btn-control btn-score" id="btn-score" disabled>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+              </svg>
+              <span>Encestar (+1)</span>
+            </button>
+
+            <button type="button" class="btn-control btn-miss" id="btn-miss" disabled title="Reinicia la racha actual">
+              <span>Fallo</span>
+            </button>
+
+            <button type="button" class="btn-control btn-reset" id="btn-reset" title="Reiniciar marcador">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="1 4 1 10 7 10"></polyline>
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="score-bottom">
+            <div>
+              <small>TIEMPO RESTANTE</small>
+              <b id="time-remaining">01:00</b>
+            </div>
+            <div>
+              <small>RÉCORD DE ESTA SESIÓN</small>
+              <b id="session-record">0</b>
+            </div>
+          </div>
+
+          <div class="progress" role="progressbar" aria-label="Tiempo restante de partida">
+            <span id="time-progress" style="width: 100%"></span>
+          </div>
+
+          <p class="demo-note" id="game-feedback">
+            Presiona "Iniciar 60s" (o la barra espaciadora durante el juego) para sumar canastas.
+          </p>
+        </div>
+
+        <!-- Panel lateral de estadísticas -->
+        <div class="score-side">
+          <div class="mini-stat">
+            <div class="mini-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                <path d="M4 22h16"></path>
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+              </svg>
+            </div>
+            <div>
+              <small>MEJOR MARCA GLOBAL</small>
+              <strong id="best-mark">42</strong>
+              <span>encestadas</span>
+            </div>
+          </div>
+
+          <div class="mini-stat">
+            <div class="mini-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
+              </svg>
+            </div>
+            <div>
+              <small>RACHA ACTUAL</small>
+              <strong id="current-streak">0</strong>
+              <span>seguidas sin fallar</span>
+            </div>
+          </div>
+
+          <div class="mini-stat">
+            <div class="mini-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div>
+              <small>DURACIÓN DEL RETO</small>
+              <strong>60 <i>s</i></strong>
+              <span>por partida</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE RANKING -->
+    <section class="ranking section" id="ranking">
+      <div class="section-heading compact">
+        <span class="section-kicker">LOS MEJORES DEL RETO</span>
+        <h2>Tabla de posiciones</h2>
+      </div>
+
+      <div class="ranking-table" id="ranking-list">
+        <div class="rank-row rank-head">
+          <span>#</span>
+          <span>JUGADOR</span>
+          <span>ÚLTIMA PARTIDA</span>
+          <span>RÉCORD</span>
+        </div>
+
+        <div class="rank-row">
+          <span class="rank gold">01</span>
+          <span class="player">
+            <span class="avatar-ring orange">
+              <img src="assets/avatar-usuario.png" alt="Avatar de Martina">
+            </span>
+            Martina
+          </span>
+          <b>36</b>
+          <span class="best">
+            42
+            <svg class="icon-crown" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 14h14v2H5v-2z"></path>
+            </svg>
+          </span>
+        </div>
+
+        <div class="rank-row">
+          <span class="rank silver">02</span>
+          <span class="player">
+            <span class="avatar-ring cyan">
+              <img src="assets/avatar-usuario.png" alt="Avatar de Diego">
+            </span>
+            Diego
+          </span>
+          <b>31</b>
+          <span class="best">38</span>
+        </div>
+
+        <div class="rank-row">
+          <span class="rank bronze">03</span>
+          <span class="player">
+            <span class="avatar-ring blue">
+              <img src="assets/avatar-usuario.png" alt="Avatar de Alex">
+            </span>
+            Alex
+          </span>
+          <b>28</b>
+          <span class="best">35</span>
+        </div>
+      </div>
+
+      <p class="demo-note">Al finalizar una partida de 60 segundos, tu puntaje se agregará automáticamente a esta tabla.</p>
+    </section>
+
+    <!-- SECCIÓN CÓMO SE JUEGA -->
+    <section class="how section" id="como-jugar">
+      <div class="section-heading compact">
+        <span class="section-kicker">FÁCIL Y RÁPIDO</span>
+        <h2>¿Cómo se juega?</h2>
+      </div>
+
+      <div class="steps">
+        <article>
+          <span>01</span>
+          <h3>Presiona Iniciar</h3>
+          <p>Activa el cronómetro oficial de 60 segundos y prepárate para lanzar.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Suma cada canasta</h3>
+          <p>Registra cada enceste antes de que el tiempo llegue a cero y mantén tu racha.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Supera el récord</h3>
+          <p>Tu mejor marca queda guardada en la tabla de posiciones para desafiar al resto.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- LLAMADO A LA ACCIÓN FINAL -->
+    <section class="final-cta">
+      <div>
+        <span class="section-kicker">¿LISTO PARA EL RETO?</span>
+        <h2>Tu próximo récord<br>está a un tiro.</h2>
+      </div>
+      <a class="button-primary" href="#marcador">
+        <span>Jugar ahora</span>
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="19" x2="12" y2="5"></line>
+          <polyline points="5 12 12 5 19 12"></polyline>
+        </svg>
+      </a>
+    </section>
+  </main>
+
+  <!-- PIE DE PÁGINA -->
+  <footer>
+    <span>SMART BASKET</span>
+    <span>Juega limpio. Supérate en cada tiro.</span>
+    <a href="#inicio">
+      <span>Volver arriba</span>
+      <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="19" x2="12" y2="5"></line>
+        <polyline points="5 12 12 5 19 12"></polyline>
+      </svg>
+    </a>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
